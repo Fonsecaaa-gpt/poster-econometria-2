@@ -11,4 +11,9 @@ Ruta_exp = Datos_dir / "ITCR colombia.csv"
 # %% Cargar datos
 df = pd.read_csv(Ruta_exp)
 
+#Revisamos los datos con jupyter
+#print(df.columns) -> Nombres dde las columnas
+
+# %% Preparamos los datos
+df.columns = ["Fecha", "ITCR_ipp", "ITCR_ipc"]
 # %%
