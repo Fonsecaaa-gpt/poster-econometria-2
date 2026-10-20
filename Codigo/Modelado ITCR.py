@@ -2,6 +2,8 @@
 from pathlib import Path 
 import pandas as pd
 import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np
 
 # %% Direccion base de datos
 Base_dir = Path(__file__).resolve().parents[1]
@@ -16,4 +18,17 @@ df = pd.read_csv(Ruta_exp)
 
 # %% Preparamos los datos
 df.columns = ["Fecha", "ITCR_ipp", "ITCR_ipc"]
+df["Fecha"] = pd.to_datetime(df["Fecha"])
+df.set_index("Fecha") 
+
+# %% Grafico serie de tiempo en nivel
+sns.set_style("whitegrid")
+plt.figure(figsize=(10, 5))
+plt.plot(df["ITCR_ipp"], color="blue", linewidth=1.5)
+plt.title("Serie de tiempo del ITCR (IPP)", fontsize=16)
+plt.xlabel("Fecha")
+plt.ylabel("indice")
+plt.show()
+
+
 # %%
