@@ -4,6 +4,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
+from statsmodels.tsa.stattools import adfuller 
+
 
 # %% Direccion base de datos
 Base_dir = Path(__file__).resolve().parents[1]
@@ -24,12 +26,19 @@ df = df.set_index("Fecha")
 # %% Grafico serie de tiempo en nivel
 sns.set_style("whitegrid")
 plt.figure(figsize=(10,5))
-plt.plot(df["ITCR_ipp"], color="darkblue", linewidth=1.5)
 plt.plot(df["ITCR_ipc"], color="brown", linewidth=1.5)
 plt.title("Serie de tiempo del ITCR (IPP - IPC)", fontsize=16)
 plt.xlabel("Fecha")
 plt.ylabel("indice")
 plt.show()
 
+# %%Revisamos la estacionariedad, ysi toca, la corregimos
+Resultado = adfuller(df["ITCR_ipc"], autolag="AIC")
+df["log_ipc"]= np.log(df["ITCR_ipc"])
+print("ADF estadistico:", Resultado[0])
+print("p-valor:", Resultado[1])
+# ajustamos varianza y media
+df["log_ipc"]=np.log(df["ITCR_ipc" ])
+diff
 
 # %%
