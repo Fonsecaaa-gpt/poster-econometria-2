@@ -39,6 +39,21 @@ print("ADF estadistico:", Resultado[0])
 print("p-valor:", Resultado[1])
 # ajustamos varianza y media
 df["log_ipc"]=np.log(df["ITCR_ipc" ])
-diff
+df["ipc_dif"]=df["log_ipc"].diff().dropna()
+
+# %% dicky fuller despues de la transformacion
+Resultado2 = adfuller(df["ipc_dif"].dropna(), autolag="AIC")
+print("ADF estadistico (transformado):", Resultado2[0])
+print("p-valor (transformado):", Resultado2[1]) 
+
+# %%
+# %% Grafica con var y media estabilizada
+sns.set_style("whitegrid")
+plt.figure(figsize=(10,5))
+plt.plot(df["ipc_dif"], color="brown", linewidth=1.5)
+plt.title("ITCR (IPC) Var y media estabilizada", fontsize=16)
+plt.xlabel("Fecha")
+plt.ylabel("indice")
+plt.show()
 
 # %%
