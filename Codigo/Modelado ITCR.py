@@ -32,7 +32,7 @@ plt.xlabel("Fecha")
 plt.ylabel("indice")
 plt.show()
 
-# %%Revisamos la estacionariedad, ysi toca, la corregimos
+# %%Revisamos la estacionariedad, y si toca, la corregimos
 Resultado = adfuller(df["ITCR_ipc"], autolag="AIC")
 df["log_ipc"]= np.log(df["ITCR_ipc"])
 print("ADF estadistico:", Resultado[0])
@@ -56,4 +56,5 @@ plt.xlabel("Fecha")
 plt.ylabel("indice")
 plt.show()
 
+#si si esta bien, creeria que toca sacar fac y facp, y quedaria un arima (p,1,q)
 # %%
