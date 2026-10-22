@@ -6,7 +6,6 @@ import seaborn as sns
 import numpy as np
 from statsmodels.tsa.stattools import adfuller 
 
-
 # %% Direccion base de datos
 Base_dir = Path(__file__).resolve().parents[1]
 Datos_dir = Base_dir / "Datos"
@@ -46,7 +45,6 @@ Resultado2 = adfuller(df["ipc_dif"].dropna(), autolag="AIC")
 print("ADF estadistico (transformado):", Resultado2[0])
 print("p-valor (transformado):", Resultado2[1]) 
 
-# %%
 # %% Grafica con var y media estabilizada
 sns.set_style("whitegrid")
 plt.figure(figsize=(10,5))
@@ -57,4 +55,6 @@ plt.ylabel("indice")
 plt.show()
 
 #si si esta bien, creeria que toca sacar fac y facp, y quedaria un arima (p,1,q)
+# %% Graficamos FAC y FACP
+
 # %%
