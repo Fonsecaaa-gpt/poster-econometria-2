@@ -67,6 +67,12 @@ plt.show()
 for orden in [(1,1,0), (1,1,1), (0,1,1)]:
     resultado_modelo_arima=ARIMA(df["log_ipc"], order=orden, trend="n").fit()
     print(orden, "AIC = ",round(resultado_modelo_arima.aic,2), "BIC = ", round(resultado_modelo_arima.bic,2))
+   
+   
+ #Aqui va la tabla
+   
+   
+   
     #para ARIMA(0,1,1)
 Resultado_arima= ARIMA(df["log_ipc"], order=(0,1,1), trend="n").fit()
 print("coeficientes estimados = ", Resultado_arima.params, "Errores estandar = ",Resultado_arima.bse, "p-valor = ",Resultado_arima.pvalues)
@@ -77,3 +83,9 @@ print("coeficientes estimados = ", Resultado_arima.params, "Errores estandar = "
 
 
 # %% Revisamos los residuos, autocorrelacion, fac y facp, jung box...
+#FAC Y FACP de los residuos
+residuos=Resultado_arima.resid[1:]
+fig, axes= plt.subplots(2,1, figsize=(10,8))
+plot_acf(residuos, lags=36, alpha=0.05, ax= axes[0], linewidth=1, markersize=0, title="FAC de residuos")
+plot_pacf(residuos, lags=36, alpha=0.05, ax=axes[1], linewidth=1, markersize=0, method="ywm", title="FACP de residuos")
+# %%
