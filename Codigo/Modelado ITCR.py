@@ -88,4 +88,8 @@ residuos=Resultado_arima.resid[1:]
 fig, axes= plt.subplots(2,1, figsize=(10,8))
 plot_acf(residuos, lags=36, alpha=0.05, ax= axes[0], linewidth=1, markersize=0, title="FAC de residuos")
 plot_pacf(residuos, lags=36, alpha=0.05, ax=axes[1], linewidth=1, markersize=0, method="ywm", title="FACP de residuos")
+#fac de residuos ^2
+# %%
+plot_acf(residuos**2, lags=36, alpha=0.05, linewidth=1, markersize=0, title="FAC de residuos^2")
+
 # %%
