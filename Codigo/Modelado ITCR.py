@@ -6,6 +6,7 @@ import seaborn as sns
 import numpy as np
 from statsmodels.tsa.stattools import adfuller 
 from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
+from statsmodels.tsa.arima.model import ARIMA 
 
 # %% Direccion base de datos
 Base_dir = Path(__file__).resolve().parents[1]
@@ -55,13 +56,15 @@ plt.xlabel("Fecha")
 plt.ylabel("indice porcentual")
 plt.show()
 
-#si si esta bien, creeria que toca sacar fac y facp, y quedaria un arima (p,1,q)
 # %% Graficamos FAC y FACP
 series = df["ipc_porcentual"].dropna()
 fig, axes = plt.subplots(2, 1, figsize=(10,8))
 plot_acf(series,lags=36, alpha=0.05, ax=axes[0],linewidth=1,markersize=0, title="FAC de IPC")
 plot_pacf(series,lags=36, alpha=0.05, method="ywm", ax=axes[1],linewidth=1,markersize=0, title="FACP de IPC")
-
 plt.show()
 
+# %% Ralizamos pruebas aic y bic para determinar el modelo arima
+for orden in [(1,1,0), (1,1,1), (0,1,1)]:
+    resultado_arima=ARIMA(df["log_ipc"], order=orden, trend="t").fit()
+    print(orden, "AIC = ",round(resultado_arima.aic,2), "BIC = ", round(resultado_arima.bic,2), resultado_arima.summary())
 # %%
