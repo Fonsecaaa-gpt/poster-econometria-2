@@ -73,23 +73,27 @@ for orden in [(1,1,0), (1,1,1), (0,1,1)]:
    
    
    
-    #para ARIMA(0,1,1)
-Resultado_arima= ARIMA(df["log_ipc"], order=(0,1,1), trend="n").fit()
-print("coeficientes estimados = ", Resultado_arima.params, "Errores estandar = ",Resultado_arima.bse, "p-valor = ",Resultado_arima.pvalues)
+    # %% #para ARIMA(0,1,1)
+resultado_arima= ARIMA(df["log_ipc"], order=(0,1,1), trend="n").fit()
+print("coeficientes estimados = ", resultado_arima.params, "Errores estandar = ",resultado_arima.bse, "p-valor = ",resultado_arima.pvalues)
     #tabla
     
 
 
 
 
-# %% Revisamos los residuos, autocorrelacion, fac y facp, jung box...
-#FAC Y FACP de los residuos
-residuos=Resultado_arima.resid[1:]
-fig, axes= plt.subplots(2,1, figsize=(10,8))
-plot_acf(residuos, lags=36, alpha=0.05, ax= axes[0], linewidth=1, markersize=0, title="FAC de residuos")
-plot_pacf(residuos, lags=36, alpha=0.05, ax=axes[1], linewidth=1, markersize=0, method="ywm", title="FACP de residuos")
-#fac de residuos ^2
-# %%
-plot_acf(residuos**2, lags=36, alpha=0.05, linewidth=1, markersize=0, title="FAC de residuos^2")
+# %% Revisamos los residuos, autocorrelacion, jung box...
+#Varianza, distribución y fac de los residuos
+sns.set_style("whitegrid")
+fig, axes= plt.subplots(2,2, figsize=(10,10))
+plot_acf(residuos, lags=36, alpha=0.05, ax= axes[0,0], linewidth=1, markersize=0, title="FAC de residuos")
+plot_acf(residuos**2, lags=36, alpha=0.05, ax=axes[0,1], linewidth=1, markersize=0, title="FAC de residuos^2")
+axes[1,0].plot(residuos, color="brown", linewidth=1.5)
+axes[1,0].set_title("Residuos", fontsize=12)
+axes[1,0].set_xlabel("Fecha")
+axes[1,0].set_ylabel("indice porcentual")
+sns.histplot(residuos, bins=40, stat="density", kde=True, color="steelblue", ax=axes[1,1])
+axes[1, 1].plot(x, norm.pdf(x, residuos.mean(), residuos.std()), color="red", linestyle="--", label="Normal")
+#pruebas formales
 
 # %%
