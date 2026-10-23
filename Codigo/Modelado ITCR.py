@@ -63,8 +63,10 @@ plot_acf(series,lags=36, alpha=0.05, ax=axes[0],linewidth=1,markersize=0, title=
 plot_pacf(series,lags=36, alpha=0.05, method="ywm", ax=axes[1],linewidth=1,markersize=0, title="FACP de IPC")
 plt.show()
 
-# %% Ralizamos pruebas aic y bic para determinar el modelo arima
+# %% Ralizamos pruebas aic y bic para determinar el modelo arima, y su tabla
 for orden in [(1,1,0), (1,1,1), (0,1,1)]:
     resultado_arima=ARIMA(df["log_ipc"], order=orden, trend="t").fit()
-    print(orden, "AIC = ",round(resultado_arima.aic,2), "BIC = ", round(resultado_arima.bic,2), resultado_arima.summary())
+    print(orden, "AIC = ",round(resultado_arima.aic,2), "BIC = ", round(resultado_arima.bic,2))
+    #tabla
+    
 # %%
