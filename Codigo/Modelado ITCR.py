@@ -28,7 +28,7 @@ df = df.set_index("Fecha")
 sns.set_style("whitegrid")
 plt.figure(figsize=(10,5))
 plt.plot(df["ITCR_ipc"], color="brown", linewidth=1.5)
-plt.title("Serie de tiempo del ITCR (IPP - IPC)", fontsize=16)
+plt.title("Serie de tiempo del ITCR (IPC)", fontsize=16)
 plt.xlabel("Fecha")
 plt.ylabel("indice")
 plt.show()
@@ -65,8 +65,15 @@ plt.show()
 
 # %% Ralizamos pruebas aic y bic para determinar el modelo arima, y su tabla
 for orden in [(1,1,0), (1,1,1), (0,1,1)]:
-    resultado_arima=ARIMA(df["log_ipc"], order=orden, trend="t").fit()
-    print(orden, "AIC = ",round(resultado_arima.aic,2), "BIC = ", round(resultado_arima.bic,2))
+    resultado_modelo_arima=ARIMA(df["log_ipc"], order=orden, trend="n").fit()
+    print(orden, "AIC = ",round(resultado_modelo_arima.aic,2), "BIC = ", round(resultado_modelo_arima.bic,2))
+    #para ARIMA(0,1,1)
+Resultado_arima= ARIMA(df["log_ipc"], order=(0,1,1), trend="n").fit()
+print("coeficientes estimados = ", Resultado_arima.params, "Errores estandar = ",Resultado_arima.bse, "p-valor = ",Resultado_arima.pvalues)
     #tabla
     
-# %%
+
+
+
+
+# %% Revisamos los residuos, autocorrelacion, fac y facp, jung box...
