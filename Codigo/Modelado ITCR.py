@@ -64,21 +64,16 @@ plot_pacf(series,lags=36, alpha=0.05, method="ywm", ax=axes[1],linewidth=1,marke
 plt.show()
 
 # %% Ralizamos pruebas aic y bic para determinar el modelo arima, y su tabla
-for orden in [(1,1,0), (1,1,1), (0,1,1)]:
-    resultado_modelo_arima=ARIMA(df["log_ipc"], order=orden, trend="n").fit()
-    print(orden, "AIC = ",round(resultado_modelo_arima.aic,2), "BIC = ", round(resultado_modelo_arima.bic,2))
-
-plt.rcParams["mathtext.fontset"] = "cm"
 
 # %% Estimación de los modelos
 ordenes = [(1, 1, 0), (1, 1, 1), (0, 1, 1)]
 nombres = [f"ARIMA({p},{d},{q})" for p, d, q in ordenes]
-
 resultados = []
 for orden in ordenes:
     res = ARIMA(df["log_ipc"], order=orden, trend="n").fit()
     resultados.append(res)
     print(orden, "AIC =", round(res.aic, 2), "BIC =", round(res.bic, 2))
+
 
 # %% Tabla gráfica
 def valor(res, nombre, tipo):
@@ -88,22 +83,18 @@ def valor(res, nombre, tipo):
     if tipo == "coef":
         return f"{res.params[nombre]:.3f}"
     return f"({res.bse[nombre]:.3f})"
-
 fig, ax = plt.subplots(figsize=(8, 3.8))
 ax.axis("off")
 ax.set_xlim(0, 1)
 ax.set_ylim(0.1, 1)
-
 x_lab = 0.03
 x_cols = [0.40, 0.62, 0.84]
 x_ini, x_fin = 0.02, 0.98
-
 # Regla superior y encabezado
 ax.hlines(0.92, x_ini, x_fin, color="black", lw=1.3)
 for x, nom in zip(x_cols, nombres):
     ax.text(x, 0.86, nom, ha="center", va="center", fontsize=12)
 ax.hlines(0.80, x_ini, x_fin, color="black", lw=0.8)
-
 # Filas de parámetros: (etiqueta, nombre del parámetro en statsmodels, posición y)
 filas = [
     (r"$\hat{a}_1$",    "ar.L1", 0.73),
@@ -114,18 +105,15 @@ for etiqueta, par, y in filas:
     for x, res in zip(x_cols, resultados):
         ax.text(x, y,        valor(res, par, "coef"), ha="center", va="center", fontsize=12)
         ax.text(x, y - 0.07, valor(res, par, "se"),   ha="center", va="center", fontsize=12)
-
 # Criterios de información
 ax.text(x_lab, 0.40, "AIC", ha="left", va="center", fontsize=12)
 ax.text(x_lab, 0.32, "BIC", ha="left", va="center", fontsize=12)
 for x, res in zip(x_cols, resultados):
     ax.text(x, 0.40, f"{res.aic:.1f}", ha="center", va="center", fontsize=12)
     ax.text(x, 0.32, f"{res.bic:.1f}", ha="center", va="center", fontsize=12)
-
 # Regla inferior y nota al pie
 ax.hlines(0.26, x_ini, x_fin, color="black", lw=1.3)
 ax.text(x_ini, 0.20, "Errores estándar entre paréntesis", ha="left", va="center", fontsize=9)
-
 plt.tight_layout()
 plt.savefig("tabla_arima.png", dpi=300, bbox_inches="tight")
 plt.show()
@@ -133,6 +121,7 @@ plt.show()
 
 # %% Revisamos los residuos, autocorrelacion, jung box...
 #Varianza, distribución y fac de los residuos
+resultado_arima= ARIMA(df["log_ipc"], order=(0,1,1), trend="n").fit()
 residuos = resultado_arima.resid.iloc[1:]
 x = np.linspace(residuos.min(), residuos.max(), 200)
 sns.set_style("whitegrid")
@@ -262,3 +251,4 @@ ax.set_ylabel("Índice")
 ax.legend()
 plt.tight_layout()
 plt.show()
+# %%
