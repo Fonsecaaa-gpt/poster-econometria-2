@@ -75,6 +75,8 @@ for orden in [(1,1,0), (1,1,1), (0,1,1)]:
 # %% para ARIMA(0,1,1)
 resultado_arima= ARIMA(df["log_ipc"], order=(0,1,1), trend="n").fit()
 print("coeficientes estimados = ", resultado_arima.params, "Errores estandar = ",resultado_arima.bse, "p-valor = ",resultado_arima.pvalues)
+
+
 #tabla
 
 
@@ -152,4 +154,5 @@ ax.legend()
 plt.tight_layout()
 plt.show()
 
+# %%
 # %%
