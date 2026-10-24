@@ -24,6 +24,7 @@ df.columns = ["Fecha", "ITCR_ipp", "ITCR_ipc"]
 df["Fecha"] = pd.to_datetime(df["Fecha"])
 df = df.set_index("Fecha")
 df.index = pd.DatetimeIndex(df.index, freq="ME")
+df= df.loc["2000":]
 
 # %% Grafico serie de tiempo en nivel
 sns.set_style("whitegrid")
@@ -59,8 +60,8 @@ plt.show()
 # %% Graficamos FAC y FACP
 series = df["ipc_porcentual"].dropna()
 fig, axes = plt.subplots(2, 1, figsize=(10,8))
-plot_acf(series,lags=36, alpha=0.05, ax=axes[0],linewidth=1,markersize=0, title="FAC de IPC")
-plot_pacf(series,lags=36, alpha=0.05, method="ywm", ax=axes[1],linewidth=1,markersize=0, title="FACP de IPC")
+plot_acf(series,lags=36, alpha=0.05, ax=axes[0],linewidth=1,markersize=0, title="FAC ITCR(IPC)")
+plot_pacf(series,lags=36, alpha=0.05, method="ywm", ax=axes[1],linewidth=1,markersize=0, title="FACP ITCR(IPC)")
 plt.show()
 
 # %% Ralizamos pruebas aic y bic para determinar el modelo arima, y su tabla
@@ -252,3 +253,4 @@ ax.legend()
 plt.tight_layout()
 plt.show()
 # %%
+
